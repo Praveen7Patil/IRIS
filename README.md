@@ -4,6 +4,7 @@
 [![Audit & Claims](https://img.shields.io/badge/Claims_Audit-10%2F10_PASS-success.svg)](claims.yaml)
 [![Secrets](https://img.shields.io/badge/Secrets_Scan-0_Violations-success.svg)](scripts/check_secrets.py)
 [![QpiAI SDK](https://img.shields.io/badge/QpiAI-Quantum%20%2B%20Opt-blue.svg)](docs/sdk_capabilities.md)
+[![Evidence Pack](https://img.shields.io/badge/Evidence-100%25_Verified-success.svg)](EVIDENCE_PACK.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -29,8 +30,8 @@ Rather than forcing 10,000 molecules into a quantum simulator or QPU, Iris imple
 Clone and run the complete verification suite in one command:
 
 ```bash
-git clone https://github.com/NishVish-Fn/Iris.git
-cd Iris
+git clone https://github.com/Praveen7Patil/IRIS.git
+cd IRIS
 make verify
 ```
 
@@ -51,7 +52,7 @@ make run-backend
 Every single number reported below is tracked in `claims.yaml` and verified by `tests/test_claims.py`:
 
 | Funnel Stage | Selected ($n$) | True Hits ($h$) | Hit Rate | Enrichment Factor (EF) | Recall | Selection Value $V(S)$ | Distinct Scaffolds | Optimality Gap |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Stage 1 Filter** | 1,000 | **77** | 7.70% | **1.48x** | 15.88% | +₹7,412,090 | 692 | N/A |
 | **Stage 2 (Opt QUBO)** | 50 | **6** | 12.00% | **2.30x** | 1.24% | +₹582,310 | 50 (100% Unique) | 0.00% |
 | **Stage 2.5 (Top 20 QML)** | 20 | **2** | 10.00% | **1.92x** | 0.41% | +₹194,520 | 20 (100% Unique) | N/A |
@@ -75,21 +76,23 @@ Every single number reported below is tracked in `claims.yaml` and verified by `
 
 ## 5. Mobile Application (Android)
 
-The production Android application features an Apple-inspired liquid-glass design system with zero text overlapping, responsive rectangle graphs, and a dedicated audit tab:
-- **Home**: Screening overview and pipeline diagnostics.
-- **Funnel**: Interactive 10,000 $\rightarrow$ 3 dot-grid visual scrubber.
-- **Leads**: 2D chemical structure SVGs, acquisition scores, cost breakdowns, and wet-lab validation protocols.
+The production Android application is built with Jetpack Compose featuring an Apple-inspired liquid-glass design system with zero text overlapping, responsive charts, and offline-first provenance:
+- **Home**: Screening overview, problem scope & medicinal chemistry user profile, pipeline diagnostics, and connection settings (custom backend host/port or offline fallback).
+- **Funnel**: Interactive 10,000 $\rightarrow$ 3 dot-grid visual scrubber with live interactive Purity Dynamics Canvas chart.
+- **Leads**: 2D chemical structure SVGs, acquisition scores, cost breakdowns (single source of truth), Lipinski + Veber cheminformatics disclosures, and quantitative wet-lab Go/No-Go decision gates ($\text{IC}_{50} \le 10\,\mu\text{M}$, selectivity $\ge 10\times$ vs. ALDH2, turbidity $< 10\text{ NTU}$).
 - **Lab**: Dynamic portfolio re-optimization with live QpiAI Opt solving and quantum circuit Bloch probing.
-- **Results**: Head-to-head rectangle comparison of top hybrid and pure QML models vs naive baselines across ROC-AUC, PR-AUC, and 6-layer checks.
-- **Audit**: Cryptographic provenance viewer, claims validation matrix, and one-command reproduction.
+- **Results**: Head-to-head rectangle comparison of top hybrid and pure QML models vs naive baselines across ROC-AUC, PR-AUC, 5-seed 95% confidence intervals, Combinatorial Space scaling ($10^{41}$ vs $19,600$), and NISQ Hardware Noise limits.
 
 **APK Location**:
-`app-debug.apk` (or install via `adb install -r app-debug.apk`).
+`app-debug.apk` (Root of repository, or install via `adb install -r app-debug.apk`).
 
 ---
 
 ## 6. Project Documentation Index
 
+- [EVIDENCE_PACK.md](EVIDENCE_PACK.md) — **1-Page Judge Reference** mapping all rubric criteria to automated test logs and cryptographic proofs.
+- [docs/PRESENTATION_AND_QML_EXPLAINER.md](docs/PRESENTATION_AND_QML_EXPLAINER.md) — **Master Presentation Guide** with QML formulas, under-the-hood calculations, 5-minute pitch script, and 10 judge Q&A defenses.
+- [results/IRIS_QML04_Comprehensive_Report.pdf](results/IRIS_QML04_Comprehensive_Report.pdf) — Complete technical whitepaper and funnel report.
 - [docs/ARCHITECTURE.svg](docs/ARCHITECTURE.svg) — High-resolution vector diagram of the multi-tier funnel.
 - [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) — 3-minute pitch walkthrough for hackathon judges.
 - [docs/JUDGE_QA.md](docs/JUDGE_QA.md) — Anticipated judge questions, quantum advantage honesty, and technical defenses.
