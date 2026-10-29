@@ -89,8 +89,7 @@ def export_assets_for_app(seed: int = 11):
         item["svg_asset"] = f"svgs/{svg_filename}"
         item["source"] = "CACHED"
         item["tool"] = "OPT"
-        if "tier_b_bb_cost_inr" in item and item["tier_b_bb_cost_inr"] > 1000:
-            item["tier_b_bb_cost_inr"] = round(item.get("c_i_inr", 100.0) * 0.4, 2)
+        # Preserve single source of truth for tier_b_bb_cost_inr
 
     # Assemble complete validation plan covering both final 3 leads and top-20 batch
     val_plan = list(metrics.get("written_validation_plan", []))

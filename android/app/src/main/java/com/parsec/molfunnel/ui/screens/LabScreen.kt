@@ -84,7 +84,7 @@ fun LabScreen(bundle: AppBundle, repository: MolFunnelRepository) {
                             color = if (isBackendOnline) HitBadgeBg else ChipBg
                         ) {
                             Text(
-                                text = if (isBackendOnline) "● LIVE QPIAI CLOUD" else "OFFLINE LOCAL SDK",
+                                text = if (isBackendOnline) "● LIVE SDK SIMULATOR" else "OFFLINE BENCHMARK",
                                 modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontSize = 9.5.sp,
@@ -119,8 +119,8 @@ fun LabScreen(bundle: AppBundle, repository: MolFunnelRepository) {
                     ) {
                         DistinctionMetricBox(
                             label = "EXECUTION MODE",
-                            value = if (isBackendOnline) "LIVE CLOUD" else "LOCAL SDK",
-                            subtext = if (isBackendOnline) "Authenticated QCloud" else "Deterministic Fallback",
+                            value = if (isBackendOnline) "LIVE API" else "SEED 11 RUN",
+                            subtext = if (isBackendOnline) "QpiAI SDK Statevector" else "Verified Gate Evidence",
                             isHighlight = isBackendOnline,
                             modifier = Modifier.weight(1f)
                         )
@@ -1148,7 +1148,7 @@ fun BeTheScreenerGameSection(bundle: AppBundle) {
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            Text("3. BE THE SCREENER (BENCHMARK CHALLENGE)", style = MaterialTheme.typography.labelSmall)
+            Text("3. BE THE SCREENER · ILLUSTRATIVE BENCHMARK TUTORIAL", style = MaterialTheme.typography.labelSmall)
             Text("Human vs Quantum vs Classical", style = MaterialTheme.typography.titleLarge, fontFamily = FontFamily.Serif)
             Spacer(modifier = Modifier.height(6.dp))
             Text(

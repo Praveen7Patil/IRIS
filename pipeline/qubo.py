@@ -276,7 +276,7 @@ def solve_qubo_qpiai_opt_core(
         selected = raw_selected
 
     # Shared energy evaluation
-    energy = evaluate_energy(selected, v_sub, S_sim, costs=costs, k=k, lambda_div=lambda_div, budget_B=budget_B, penalty_card=A)
+    energy = evaluate_energy(selected, v_sub, S_sim, costs=costs, k=k, lambda_div=lambda_div, budget_B=budget_B, penalty_card=0.0 if len(selected) == k else A)
     run_id = f"opt-local-qubo-run-{int(time.time() * 1000)}"
 
     return selected, energy, run_id, solve_duration
@@ -409,7 +409,7 @@ def solve_hubo_qpiai_opt(
     if len(selected) != k:
         selected = sorted(list(set(selected) | set(np.argsort(v_sub)[-k:])))[:k]
 
-    energy = evaluate_energy(selected, v_sub, S_sim, scaffolds=scaffolds, k=k, lambda_div=lambda_div, omega_hubo=omega_hubo, penalty_card=A)
+    energy = evaluate_energy(selected, v_sub, S_sim, scaffolds=scaffolds, k=k, lambda_div=lambda_div, omega_hubo=omega_hubo, penalty_card=0.0 if len(selected) == k else A)
     run_id = f"opt-local-hubo-run-{int(time.time() * 1000)}"
 
     return selected, energy, run_id, solve_duration
