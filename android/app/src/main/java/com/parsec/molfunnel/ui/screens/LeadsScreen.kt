@@ -5,13 +5,11 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
@@ -47,8 +45,8 @@ fun LeadsScreen(bundle: AppBundle) {
             .fillMaxSize()
             .background(CanvasBg)
             .padding(16.dp),
-        contentPadding = PaddingValues(bottom = 32.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(bottom = 96.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         item {
             Column {
@@ -58,7 +56,7 @@ fun LeadsScreen(bundle: AppBundle) {
                     fontFamily = FontFamily.Serif
                 )
                 Text(
-                    text = "Combinatorially chosen by QpiAI Opt HUBO",
+                    text = "Selected by QpiAI Opt HUBO (₹2,000 budget)",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -102,7 +100,7 @@ fun LeadsScreen(bundle: AppBundle) {
 fun TabButton(text: String, selected: Boolean, modifier: Modifier, onClick: () -> Unit) {
     Surface(
         modifier = modifier
-            .height(36.dp)
+            .height(38.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(10.dp),
         color = if (selected) InkPrimary else Color.Transparent
@@ -111,7 +109,8 @@ fun TabButton(text: String, selected: Boolean, modifier: Modifier, onClick: () -
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelSmall,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+                letterSpacing = 0.5.sp,
                 color = if (selected) CardBg else InkSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -137,7 +136,7 @@ fun LeadCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(1.dp, InkPrimary, RoundedCornerShape(24.dp))
+            .border(1.5.dp, CardBorder, RoundedCornerShape(26.dp))
             .combinedClickable(
                 onClick = {},
                 onLongClick = {
@@ -145,46 +144,50 @@ fun LeadCard(
                     Toast.makeText(context, "Copied SMILES to clipboard", Toast.LENGTH_SHORT).show()
                 }
             ),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(26.dp),
         colors = CardDefaults.cardColors(containerColor = CardBg),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            // Header: Title and Badges
+            // Header: Title and Badges matching the reference image exactly
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (isFinalLead) "Lead #$displayRank" else "Candidate #$displayRank",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontFamily = FontFamily.Serif
+                    text = if (isFinalLead) "Lead #$displayRank" else "Lead #$displayRank",
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.Bold,
+                    color = InkPrimary
                 )
 
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(8.dp),
                         color = InkPrimary
                     ) {
                         Text(
                             text = "NOVEL SCAFFOLD",
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                            modifier = Modifier.padding(horizontal = 9.dp, vertical = 5.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            fontSize = 9.sp,
+                            fontSize = 9.5.sp,
+                            letterSpacing = 0.5.sp,
                             fontWeight = FontWeight.Bold,
                             color = CardBg
                         )
                     }
                     Surface(
-                        shape = RoundedCornerShape(6.dp),
+                        shape = RoundedCornerShape(8.dp),
                         color = HitBadgeBg
                     ) {
                         Text(
                             text = if (isFinalLead) "FINALIST" else "TOP-20",
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                            modifier = Modifier.padding(horizontal = 9.dp, vertical = 5.dp),
                             style = MaterialTheme.typography.labelSmall,
-                            fontSize = 9.sp,
+                            fontSize = 9.5.sp,
+                            letterSpacing = 0.5.sp,
                             fontWeight = FontWeight.Bold,
                             color = HitBadgeText
                         )
@@ -192,16 +195,16 @@ fun LeadCard(
                 }
             }
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // 2D Structure Panel
+            // 2D Molecular Structure Panel (Generous rounded container, matching reference image)
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
-                shape = RoundedCornerShape(16.dp),
-                color = CodeBg,
-                border = BorderStroke(1.dp, HairlineBorder)
+                    .height(220.dp),
+                shape = RoundedCornerShape(18.dp),
+                color = InnerContainerBg,
+                border = BorderStroke(1.dp, InnerContainerBorder)
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     if (lead.svgAsset.isNotEmpty()) {
@@ -213,13 +216,14 @@ fun LeadCard(
                             contentDescription = "2D Molecular Structure for ${lead.pubchemSid}",
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(12.dp)
+                                .padding(16.dp)
                         )
                     } else {
                         Text(
                             text = "[ 2D Molecular Structure ]\nTap to Zoom",
                             style = MaterialTheme.typography.labelSmall,
-                            color = InkSecondary
+                            color = InkSecondary,
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -227,106 +231,100 @@ fun LeadCard(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Visual Metric Badges
+            // 2x2 Distinct Rectangular Metric Boxes (Exact Reference Image Styling)
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Surface(
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(10.dp),
-                    color = CodeBg,
-                    border = BorderStroke(1.dp, HairlineBorder)
-                ) {
-                    Column(modifier = Modifier.padding(10.dp)) {
-                        Text("PROCUREMENT", style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = InkSecondary, fontWeight = FontWeight.Bold)
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text("₹${lead.costInr.toInt()}", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = InkPrimary)
-                        Text(lead.costSource, style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = InkSecondary)
-                    }
-                }
-                Surface(
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(10.dp),
-                    color = HitBadgeBg,
-                    border = BorderStroke(1.dp, HitBadgeBg)
-                ) {
-                    Column(modifier = Modifier.padding(10.dp)) {
-                        Text("P(ACTIVE)", style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = HitBadgeText, fontWeight = FontWeight.Bold)
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text("${(lead.pActive * 100).toInt()}%", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = HitBadgeText)
-                        Text("± ${(lead.sigma * 100).toInt()}% conf", style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = HitBadgeText)
-                    }
-                }
+                DistinctionMetricBox(
+                    label = "PROCUREMENT",
+                    value = "₹${lead.costInr.toInt()}",
+                    subtext = lead.costSource,
+                    modifier = Modifier.weight(1f)
+                )
+                DistinctionMetricBox(
+                    label = "P(ACTIVE)",
+                    value = "${(lead.pActive * 100).toInt()}%",
+                    subtext = "± ${(lead.sigma * 100).toInt()}% conf",
+                    isHighlight = true,
+                    modifier = Modifier.weight(1f)
+                )
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Surface(
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(10.dp),
-                    color = CodeBg,
-                    border = BorderStroke(1.dp, HairlineBorder)
-                ) {
-                    Column(modifier = Modifier.padding(10.dp)) {
-                        Text("SYNTHESIS (SA)", style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = InkSecondary, fontWeight = FontWeight.Bold)
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text("${String.format("%.1f", lead.saScore)} / 10", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = InkPrimary)
-                        Text("Easy Precursors", style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = Color(0xFF27AE60))
-                    }
-                }
-                Surface(
-                    modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(10.dp),
-                    color = CodeBg,
-                    border = BorderStroke(1.dp, HairlineBorder)
-                ) {
-                    Column(modifier = Modifier.padding(10.dp)) {
-                        Text("PUBCHEM SID", style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = InkSecondary, fontWeight = FontWeight.Bold)
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(lead.pubchemSid, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, color = InkPrimary)
-                        Text("Stage 1 # ${lead.stage1Rank}", style = MaterialTheme.typography.labelSmall, fontSize = 8.sp, color = InkSecondary)
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-            HorizontalDivider(color = HairlineBorder)
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // SMILES and Scaffold
-            Text("SMILES", style = MaterialTheme.typography.labelSmall, color = InkSecondary)
-            Text(
-                text = lead.smiles,
-                style = MaterialTheme.typography.labelSmall,
-                color = InkPrimary,
-                fontFamily = FontFamily.Monospace,
-                maxLines = 2
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text("BEMIS-MURCKO SCAFFOLD", style = MaterialTheme.typography.labelSmall, color = InkSecondary)
-            Text(
-                text = lead.scaffold,
-                style = MaterialTheme.typography.labelSmall,
-                color = InkPrimary,
-                fontFamily = FontFamily.Monospace,
-                maxLines = 2
-            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                DistinctionMetricBox(
+                    label = "SYNTHESIS (SA)",
+                    value = "${String.format("%.1f", lead.saScore)} / 10",
+                    subtext = "Easy Precursors",
+                    subtextColor = Color(0xFF137333),
+                    modifier = Modifier.weight(1f)
+                )
+                DistinctionMetricBox(
+                    label = "PUBCHEM SID",
+                    value = lead.pubchemSid,
+                    subtext = "Stage 1 # ${lead.stage1Rank}",
+                    isMonospaceValue = true,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            // SMILES and Bemis-Murcko Scaffold Blocks
+            Text(
+                text = "SMILES",
+                style = MaterialTheme.typography.labelSmall,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.5.sp,
+                color = InkSecondary
+            )
+            Spacer(modifier = Modifier.height(3.dp))
+            Text(
+                text = lead.smiles,
+                style = MaterialTheme.typography.bodySmall,
+                fontSize = 11.5.sp,
+                lineHeight = 16.sp,
+                color = InkPrimary,
+                fontFamily = FontFamily.Monospace,
+                maxLines = 3
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = "BEMIS-MURCKO SCAFFOLD",
+                style = MaterialTheme.typography.labelSmall,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.5.sp,
+                color = InkSecondary
+            )
+            Spacer(modifier = Modifier.height(3.dp))
+            Text(
+                text = lead.scaffold,
+                style = MaterialTheme.typography.bodySmall,
+                fontSize = 11.5.sp,
+                lineHeight = 16.sp,
+                color = InkPrimary,
+                fontFamily = FontFamily.Monospace,
+                maxLines = 3
+            )
+
+            Spacer(modifier = Modifier.height(18.dp))
+
+            // Full-Width Solid Black Action Button
             Button(
                 onClick = { showQuoteDialog = true },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(44.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .height(48.dp),
+                shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (quoteRequested) HitBadgeBg else InkPrimary
                 ),
@@ -334,19 +332,21 @@ fun LeadCard(
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     if (quoteRequested) {
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = "Confirmed",
                             tint = HitBadgeText,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(18.dp)
                         )
                     }
                     Text(
                         text = if (quoteRequested) "QUOTE CONFIRMED (₹${lead.costInr.toInt()})" else "REQUEST VENDOR PROCUREMENT RFQ",
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = 11.sp,
+                        letterSpacing = 1.sp,
                         fontWeight = FontWeight.Bold,
                         color = if (quoteRequested) HitBadgeText else CardBg
                     )
@@ -361,7 +361,8 @@ fun LeadCard(
                         Text(
                             text = "Vendor Procurement Quote",
                             style = MaterialTheme.typography.titleLarge,
-                            fontFamily = FontFamily.Serif
+                            fontFamily = FontFamily.Serif,
+                            fontWeight = FontWeight.Bold
                         )
                     },
                     text = {
@@ -402,6 +403,7 @@ fun LeadCard(
                                 quoteRequested = true
                                 showQuoteDialog = false
                             },
+                            shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = InkPrimary)
                         ) {
                             Text("COPY RFQ QUOTE", color = CardBg, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
@@ -417,27 +419,33 @@ fun LeadCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
-            // Collapsible Validation Plan
+            // Collapsible Validation Plan in a Clean Styled Distinct Container
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { expandedPlan = !expandedPlan },
-                shape = RoundedCornerShape(12.dp),
-                color = CodeBg
+                shape = RoundedCornerShape(14.dp),
+                color = MetricBoxBg,
+                border = BorderStroke(1.dp, MetricBoxBorder)
             ) {
-                Column(modifier = Modifier.padding(12.dp)) {
+                Column(modifier = Modifier.padding(14.dp)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
-                            text = "WRITTEN VALIDATION PLAN",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "WET-LAB VALIDATION PROTOCOL",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontSize = 10.sp,
+                                letterSpacing = 0.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = InkPrimary
+                            )
+                        }
                         Icon(
                             imageVector = if (expandedPlan) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                             contentDescription = "Expand validation plan",
@@ -449,12 +457,14 @@ fun LeadCard(
                         val plan = validationPlan ?: com.parsec.molfunnel.model.ValidationPlanItem(
                             leadNum = displayRank,
                             pubchemSid = lead.pubchemSid,
-                            primaryAssay = "ALDH1 NADH fluorescence assay (AID 1030 replicate, excitation 340nm / emission 460nm, 15 min kinetic readout)",
-                            orthogonalAssay = "LC-MS substrate consumption assay (4-nitrobenzaldehyde to 4-nitrobenzoic acid)",
-                            counterScreening = "ALDH2 isozyme selectivity counter-screen to verify ALDH1 target specificity",
-                            ic50Determination = "10-point 3-fold serial dilution curve (top concentration 50 uM, duplicate wells)",
-                            solubilityCheck = "Nephelometric turbidity assay in 1% DMSO / aqueous assay buffer"
+                            primaryAssay = "NADH fluorescence assay (AID 1030 replicate, 340/460 nm, 15 min readout)",
+                            orthogonalAssay = "LC-MS substrate consumption assay (4-NBA → 4-NA)",
+                            counterScreening = "ALDH2 isozyme selectivity counter-screen",
+                            ic50Determination = "10-point 3-fold serial dilution curve (top 50 µM)",
+                            solubilityCheck = "Nephelometric turbidity in 1% DMSO buffer"
                         )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        HorizontalDivider(color = HairlineBorder)
                         Spacer(modifier = Modifier.height(8.dp))
                         PlanItem("Primary Assay", plan.primaryAssay)
                         PlanItem("Orthogonal Assay", plan.orthogonalAssay)
@@ -469,37 +479,23 @@ fun LeadCard(
 }
 
 @Composable
-fun InfoRow(label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 3.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Text(
-            text = label,
-            modifier = Modifier.weight(0.44f),
-            style = MaterialTheme.typography.labelSmall,
-            color = InkSecondary
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = value,
-            modifier = Modifier.weight(0.56f),
-            textAlign = TextAlign.End,
-            style = MaterialTheme.typography.labelSmall,
-            fontFamily = FontFamily.Monospace,
-            color = InkPrimary,
-            fontWeight = FontWeight.Medium
-        )
-    }
-}
-
-@Composable
 fun PlanItem(label: String, text: String) {
     Column(modifier = Modifier.padding(vertical = 4.dp)) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = InkSecondary, fontWeight = FontWeight.Bold)
-        Text(text, style = MaterialTheme.typography.bodyMedium, color = InkPrimary)
+        Text(
+            text = label.uppercase(),
+            style = MaterialTheme.typography.labelSmall,
+            fontSize = 9.sp,
+            color = InkSecondary,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall,
+            fontSize = 11.5.sp,
+            lineHeight = 16.sp,
+            color = InkPrimary
+        )
     }
 }
 

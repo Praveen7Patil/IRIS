@@ -3,6 +3,7 @@ package com.parsec.molfunnel.ui.screens
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -71,7 +72,7 @@ fun FunnelScreen(bundle: AppBundle) {
                 costPerHitText = "₹2,084 / hit",
                 scaffoldsText = "3,820 families",
                 tool = "LIT-PCBA (AID 1030)",
-                description = "Unfiltered library of 10,000 diverse drug-like molecules from PubChem AID 1030."
+                description = "10,000 unlabelled candidate molecules from PubChem AID 1030."
             ),
             FunnelStageData(
                 index = 1,
@@ -87,7 +88,7 @@ fun FunnelScreen(bundle: AppBundle) {
                 costPerHitText = "₹${(stage1Metrics?.costPerHit ?: 1407.5).toInt()} / hit",
                 scaffoldsText = "${stage1Metrics?.distinctScaffolds ?: 674} unique scaffolds",
                 tool = "HIGH-SPEED RANKING",
-                description = "Filters 10,000 candidates down to 1,000, capping each scaffold at 5 molecules to eliminate redundancy."
+                description = "Top 1,000 candidates ranked by net value (max 5 compounds per scaffold)."
             ),
             FunnelStageData(
                 index = 2,
@@ -101,9 +102,9 @@ fun FunnelScreen(bundle: AppBundle) {
                 efText = if (stage2Metrics != null) "${stage2Metrics.enrichmentFactor}x" else "2.30x (Peak)",
                 costText = "₹${(stage2Metrics?.totalCost ?: 5442.85).toInt()}",
                 costPerHitText = "₹${(stage2Metrics?.costPerHit ?: 907.14).toInt()} / hit",
-                scaffoldsText = "${stage2Metrics?.distinctScaffolds ?: 44} distinct scaffolds",
+                scaffoldsText = "${stage2Metrics?.distinctScaffolds ?: 44} unique scaffolds",
                 tool = "QPIAI OPT (QUBO)",
-                description = "Quantum combinatorial optimizer selects the 50 best, most diverse molecules, boosting active cure discovery by 2.30x."
+                description = "QpiAI Opt QUBO balances potency, Tanimoto diversity, and budget constraints."
             ),
             FunnelStageData(
                 index = 3,
@@ -119,7 +120,7 @@ fun FunnelScreen(bundle: AppBundle) {
                 costPerHitText = "₹${((stage3Metrics?.totalCost ?: 333.96) / 3).toInt()} / lead",
                 scaffoldsText = "3 unique scaffolds (100% diversity)",
                 tool = "QPIAI OPT (HUBO)",
-                description = "Higher-order quantum optimizer picks the 3 ultimate leads, strictly penalizing scaffold duplicates for ₹333.96 total bill."
+                description = "QpiAI Opt HUBO with cubic scaffold penalty selects 3 diverse leads for ₹333.96."
             )
         )
     }
@@ -131,8 +132,8 @@ fun FunnelScreen(bundle: AppBundle) {
             .fillMaxSize()
             .background(CanvasBg)
             .padding(16.dp),
-        contentPadding = PaddingValues(bottom = 32.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(bottom = 96.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         item {
             Text(
@@ -141,7 +142,7 @@ fun FunnelScreen(bundle: AppBundle) {
                 fontFamily = FontFamily.Serif
             )
             Text(
-                text = "Track molecule numbers, discovery rates, and cost reductions across all stages",
+                text = "Multi-tier screening from 10,000 to 3 leads",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -149,10 +150,12 @@ fun FunnelScreen(bundle: AppBundle) {
         // Interactive Funnel Dashboard & Scrubber Card
         item {
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.5.dp, CardBorder, RoundedCornerShape(26.dp)),
+                shape = RoundedCornerShape(26.dp),
                 colors = CardDefaults.cardColors(containerColor = CardBg),
-                border = BorderStroke(1.dp, HairlineBorder)
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -166,7 +169,6 @@ fun FunnelScreen(bundle: AppBundle) {
                     ) {
                         Text(
                             text = "INTERACTIVE FUNNEL SCRUBBER",
-                            modifier = Modifier.weight(1f),
                             style = MaterialTheme.typography.labelSmall,
                             letterSpacing = 1.sp,
                             fontWeight = FontWeight.Bold,
@@ -174,18 +176,17 @@ fun FunnelScreen(bundle: AppBundle) {
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
-                        Spacer(modifier = Modifier.width(6.dp))
                         Surface(
-                            shape = RoundedCornerShape(6.dp),
-                            color = ChipBg
+                            shape = RoundedCornerShape(8.dp),
+                            color = InkPrimary
                         ) {
                             Text(
                                 text = activeStage.tool,
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontSize = 9.5.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = InkPrimary,
+                                color = CardBg,
                                 maxLines = 1
                             )
                         }
@@ -195,7 +196,7 @@ fun FunnelScreen(bundle: AppBundle) {
 
                     Text(
                         text = activeStage.title,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.headlineMedium,
                         fontFamily = FontFamily.Serif,
                         fontWeight = FontWeight.Bold
                     )
@@ -205,51 +206,49 @@ fun FunnelScreen(bundle: AppBundle) {
                         color = InkSecondary
                     )
 
-                    Spacer(modifier = Modifier.height(14.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
-                    // 4 Key Number Metrics Dashboard
-                    Surface(
+                    // 2x2 Distinct Rectangular Metric Distinction Boxes
+                    Row(
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        color = CanvasBg,
-                        border = BorderStroke(1.dp, HairlineBorder)
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        Column(modifier = Modifier.padding(14.dp)) {
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                FunnelMetricBox(
-                                    label = "SURVIVING COUNT",
-                                    value = activeStage.survivorCount,
-                                    subtext = activeStage.eliminatedPct,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                FunnelMetricBox(
-                                    label = "DISCOVERY BOOST",
-                                    value = activeStage.efText,
-                                    subtext = "Hit rate: ${activeStage.hitRateText}",
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(12.dp))
-                            HorizontalDivider(color = HairlineBorder)
-                            Spacer(modifier = Modifier.height(12.dp))
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                FunnelMetricBox(
-                                    label = "STAGE SPEND",
-                                    value = activeStage.costText,
-                                    subtext = activeStage.costPerHitText,
-                                    modifier = Modifier.weight(1f)
-                                )
-                                FunnelMetricBox(
-                                    label = "SCAFFOLD VARIETY",
-                                    value = activeStage.scaffoldsText,
-                                    subtext = activeStage.hitsText,
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-                        }
+                        DistinctionMetricBox(
+                            label = "SURVIVING COUNT",
+                            value = activeStage.survivorCount,
+                            subtext = activeStage.eliminatedPct,
+                            modifier = Modifier.weight(1f)
+                        )
+                        DistinctionMetricBox(
+                            label = "DISCOVERY BOOST",
+                            value = activeStage.efText,
+                            subtext = "Hit rate: ${activeStage.hitRateText}",
+                            isHighlight = currentStageInt >= 2,
+                            modifier = Modifier.weight(1f)
+                        )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        DistinctionMetricBox(
+                            label = "STAGE SPEND",
+                            value = activeStage.costText,
+                            subtext = activeStage.costPerHitText,
+                            modifier = Modifier.weight(1f)
+                        )
+                        DistinctionMetricBox(
+                            label = "SCAFFOLD VARIETY",
+                            value = activeStage.scaffoldsText,
+                            subtext = activeStage.hitsText,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     // Visual Funnel Taper Progress Bars
                     Text(
@@ -259,7 +258,7 @@ fun FunnelScreen(bundle: AppBundle) {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         FunnelLevelBar(
                             name = "Initial Pool",
                             count = "10,000",
@@ -293,9 +292,9 @@ fun FunnelScreen(bundle: AppBundle) {
                         ) { scrubberStage = 3f }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(18.dp))
 
-                    // Scrubber Slider with Non-Overlapping Stage Points
+                    // Scrubber Slider
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -345,13 +344,13 @@ fun FunnelScreen(bundle: AppBundle) {
                 reduction = "10,000 → 1,000 Compounds",
                 tool = "HIGH-SPEED RANKING",
                 toolTagColor = InkSecondary,
-                description = "Filters 10,000 candidates to 1,000 by balancing predicted potency, chemical novelty, and synthesis cost. Caps each scaffold family at 5 molecules to eliminate copies.",
+                description = "Top 1,000 candidates by net value (max 5 per scaffold).",
                 candidatesIn = "10,000",
                 candidatesOut = "${stage1Metrics?.nSelected ?: 1000}",
                 reductionRate = "90.0% eliminated",
                 hitsFound = "${stage1Metrics?.hits ?: 77} confirmed cures",
                 hitRate = if (stage1Metrics != null) "${String.format("%.1f", stage1Metrics.hitRate * 100)}%" else "7.7%",
-                enrichment = if (stage1Metrics != null) "${stage1Metrics.enrichmentFactor}x baseline" else "1.48x baseline",
+                enrichment = if (stage1Metrics != null) "${stage1Metrics.enrichmentFactor}x" else "1.48x",
                 stageSpend = "₹${(stage1Metrics?.totalCost ?: 108377.39).toInt()}",
                 costPerHit = "₹${(stage1Metrics?.costPerHit ?: 1407.5).toInt()}",
                 scaffolds = "${stage1Metrics?.distinctScaffolds ?: 674} unique families"
@@ -366,15 +365,15 @@ fun FunnelScreen(bundle: AppBundle) {
                 reduction = "1,000 → 50 Compounds",
                 tool = "QPIAI OPT (QUBO)",
                 toolTagColor = InkPrimary,
-                description = "Quantum combinatorial optimizer solves a Quadratic Unconstrained Binary Optimization (QUBO) problem with Tanimoto diversity penalties, selecting the 50 most diverse, active candidates.",
+                description = "QpiAI Opt QUBO balances potency, diversity, and budget constraints.",
                 candidatesIn = "1,000",
                 candidatesOut = "${stage2Metrics?.nSelected ?: 50}",
-                reductionRate = "99.5% total reduction",
+                reductionRate = "99.5% reduction",
                 hitsFound = "${stage2Metrics?.hits ?: 6} confirmed cures",
                 hitRate = if (stage2Metrics != null) "${String.format("%.1f", stage2Metrics.hitRate * 100)}%" else "12.0%",
-                enrichment = if (stage2Metrics != null) "${stage2Metrics.enrichmentFactor}x (Peak Enrichment)" else "2.30x (Peak)",
+                enrichment = if (stage2Metrics != null) "${stage2Metrics.enrichmentFactor}x" else "2.30x (Peak)",
                 stageSpend = "₹${(stage2Metrics?.totalCost ?: 5442.85).toInt()}",
-                costPerHit = "₹${(stage2Metrics?.costPerHit ?: 907.14).toInt()} (35% cheaper)",
+                costPerHit = "₹${(stage2Metrics?.costPerHit ?: 907.14).toInt()}",
                 scaffolds = "${stage2Metrics?.distinctScaffolds ?: 44} distinct families"
             )
         }
@@ -387,13 +386,13 @@ fun FunnelScreen(bundle: AppBundle) {
                 reduction = "50 → Top 20 Candidates",
                 tool = "QPIAI OPT VALIDATION",
                 toolTagColor = InkSecondary,
-                description = "Top 20 candidates selected from the Stage 2 survivor pool for wet-lab assay procurement, pricing confirmation, and orthogonal testing.",
+                description = "Top 20 candidates prioritized for assay procurement and validation.",
                 candidatesIn = "50",
                 candidatesOut = "${top20Metrics?.nSelected ?: 20}",
-                reductionRate = "99.8% total reduction",
+                reductionRate = "99.8% reduction",
                 hitsFound = "${top20Metrics?.hits ?: 2} confirmed cures",
                 hitRate = if (top20Metrics != null) "${String.format("%.1f", top20Metrics.hitRate * 100)}%" else "10.0%",
-                enrichment = if (top20Metrics != null) "${top20Metrics.enrichmentFactor}x baseline" else "1.92x baseline",
+                enrichment = if (top20Metrics != null) "${top20Metrics.enrichmentFactor}x" else "1.92x",
                 stageSpend = "₹${(top20Metrics?.totalCost ?: 2198.69).toInt()}",
                 costPerHit = "₹${(top20Metrics?.costPerHit ?: 1099.35).toInt()}",
                 scaffolds = "${top20Metrics?.distinctScaffolds ?: 18} unique families"
@@ -408,56 +407,18 @@ fun FunnelScreen(bundle: AppBundle) {
                 reduction = "50 → Final 3 Winner Leads",
                 tool = "QPIAI OPT (HUBO)",
                 toolTagColor = InkPrimary,
-                description = "Higher-Order Binary Optimization (HUBO) incorporates a cubic scaffold penalty to select the 3 ultimate winner leads with guaranteed 100% variety across 3 unique chemical scaffolds.",
+                description = "HUBO cubic scaffold penalty enforces 100% unique chemotypes for ₹333.96.",
                 candidatesIn = "50",
                 candidatesOut = "3 Winner Leads",
-                reductionRate = "99.97% total reduction",
+                reductionRate = "99.97% reduction",
                 hitsFound = "3 diverse leads",
                 hitRate = "100% Validated",
-                enrichment = "2.30x Enriched Pool",
+                enrichment = "2.30x Enriched",
                 stageSpend = "₹${(stage3Metrics?.totalCost ?: 333.96).toInt()}",
-                costPerHit = "₹${((stage3Metrics?.totalCost ?: 333.96) / 3).toInt()} / lead",
+                costPerHit = "₹${((stage3Metrics?.totalCost ?: 333.96) / 3).toInt()}",
                 scaffolds = "3 unique families (100% diversity)"
             )
         }
-    }
-}
-
-@Composable
-fun FunnelMetricBox(
-    label: String,
-    value: String,
-    subtext: String,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            fontSize = 10.sp,
-            letterSpacing = 0.5.sp,
-            color = InkSecondary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Serif,
-            color = InkPrimary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            text = subtext,
-            style = MaterialTheme.typography.bodySmall,
-            fontSize = 11.sp,
-            color = InkSecondary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
     }
 }
 
@@ -474,11 +435,11 @@ fun FunnelLevelBar(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(8.dp),
-        color = if (isSelected) ChipBg else Color.Transparent,
-        border = if (isSelected) BorderStroke(1.dp, InkPrimary) else null
+        shape = RoundedCornerShape(12.dp),
+        color = if (isSelected) MetricBoxBg else Color.Transparent,
+        border = if (isSelected) BorderStroke(1.5.dp, CardBorder) else BorderStroke(1.dp, HairlineBorder)
     ) {
-        Column(modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -487,7 +448,8 @@ fun FunnelLevelBar(
                     text = name,
                     modifier = Modifier.weight(0.48f),
                     style = MaterialTheme.typography.labelSmall,
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                    fontSize = 11.sp,
+                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                     color = InkPrimary
                 )
                 Spacer(modifier = Modifier.width(6.dp))
@@ -496,12 +458,13 @@ fun FunnelLevelBar(
                     modifier = Modifier.weight(0.52f),
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.labelSmall,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace,
                     color = InkPrimary
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(6.dp))
             LinearProgressIndicator(
                 progress = { barFraction },
                 modifier = Modifier
@@ -533,12 +496,14 @@ fun DetailedStageCard(
     scaffolds: String
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.5.dp, CardBorder, RoundedCornerShape(26.dp)),
+        shape = RoundedCornerShape(26.dp),
         colors = CardDefaults.cardColors(containerColor = CardBg),
-        border = BorderStroke(1.dp, HairlineBorder)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(modifier = Modifier.padding(18.dp)) {
+        Column(modifier = Modifier.padding(20.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -546,99 +511,121 @@ fun DetailedStageCard(
             ) {
                 Text(
                     text = stageNum,
-                    modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = InkSecondary,
                     letterSpacing = 1.sp,
                     maxLines = 1
                 )
-                Spacer(modifier = Modifier.width(6.dp))
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
-                    color = ChipBg
+                    shape = RoundedCornerShape(8.dp),
+                    color = InkPrimary
                 ) {
                     Text(
                         text = tool,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                        modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
                         fontSize = 9.5.sp,
-                        color = toolTagColor,
+                        color = CardBg,
+                        letterSpacing = 0.5.sp,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = stageTitle,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = reduction,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 color = InkSecondary
             )
 
             Spacer(modifier = Modifier.height(8.dp))
-            Text(description, style = MaterialTheme.typography.bodySmall, lineHeight = 18.sp)
+            Text(description, style = MaterialTheme.typography.bodyMedium, lineHeight = 20.sp)
 
-            Spacer(modifier = Modifier.height(14.dp))
-            HorizontalDivider(color = HairlineBorder)
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // 6-Metric Clean Bill Table
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                StageBillRow("Candidate Reduction", "$candidatesIn → $candidatesOut ($reductionRate)")
-                StageBillRow("Active Cures Found", "$hitsFound (Hit Rate: $hitRate)")
-                StageBillRow("Enrichment Odds Boost", enrichment)
-                StageBillRow("Stage Synthesis Spend", "$stageSpend ($costPerHit)")
-                StageBillRow("Chemical Family Diversity", scaffolds)
+            // 2x3 Distinct Rectangular Metric Distinction Boxes
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                DistinctionMetricBox(
+                    label = "CANDIDATES",
+                    value = "$candidatesIn → $candidatesOut",
+                    subtext = reductionRate,
+                    modifier = Modifier.weight(1f)
+                )
+                DistinctionMetricBox(
+                    label = "ENRICHMENT (EF)",
+                    value = enrichment,
+                    subtext = "Discovery Odds Boost",
+                    isHighlight = true,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                DistinctionMetricBox(
+                    label = "CONFIRMED CURES",
+                    value = hitsFound,
+                    subtext = "Hit Rate: $hitRate",
+                    isHighlight = true,
+                    modifier = Modifier.weight(1f)
+                )
+                DistinctionMetricBox(
+                    label = "STAGE SPEND",
+                    value = stageSpend,
+                    subtext = costPerHit,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                DistinctionMetricBox(
+                    label = "SCAFFOLD VARIETY",
+                    value = scaffolds,
+                    subtext = "Chemical Chemotypes",
+                    modifier = Modifier.weight(1f)
+                )
+                DistinctionMetricBox(
+                    label = "OPTIMIZER TOOL",
+                    value = tool,
+                    subtext = "Optimal Selection",
+                    modifier = Modifier.weight(1f)
+                )
             }
         }
     }
 }
 
 @Composable
-fun StageBillRow(label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Text(
-            text = label,
-            modifier = Modifier.weight(0.40f),
-            style = MaterialTheme.typography.bodySmall,
-            lineHeight = 18.sp,
-            color = InkSecondary
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = value,
-            modifier = Modifier.weight(0.60f),
-            textAlign = TextAlign.End,
-            style = MaterialTheme.typography.bodySmall,
-            lineHeight = 18.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.Monospace,
-            color = InkPrimary
-        )
-    }
-}
-
-@Composable
 fun FunnelFiltrationDecayChart() {
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.5.dp, CardBorder, RoundedCornerShape(26.dp)),
+        shape = RoundedCornerShape(26.dp),
         colors = CardDefaults.cardColors(containerColor = CardBg),
-        border = BorderStroke(1.dp, HairlineBorder)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -657,14 +644,14 @@ fun FunnelFiltrationDecayChart() {
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(8.dp),
                     color = HitBadgeBg
                 ) {
                     Text(
                         text = "99.97% LOG TAPER",
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                        modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelSmall,
-                        fontSize = 9.sp,
+                        fontSize = 9.5.sp,
                         fontWeight = FontWeight.Bold,
                         color = HitBadgeText,
                         maxLines = 1
@@ -672,128 +659,137 @@ fun FunnelFiltrationDecayChart() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Screening Decay vs Active Purity",
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.headlineMedium,
                 fontFamily = FontFamily.Serif,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Dual-axis projection showing logarithmic library reduction vs active hit enrichment rate",
-                style = MaterialTheme.typography.bodySmall,
+                text = "Library contraction vs active hit enrichment",
+                style = MaterialTheme.typography.bodyMedium,
                 color = InkSecondary
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Canvas Chart
-            Box(
+            // Canvas Chart inside clean distinct container
+            Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
+                    .height(190.dp),
+                shape = RoundedCornerShape(18.dp),
+                color = InnerContainerBg,
+                border = BorderStroke(1.dp, InnerContainerBorder)
             ) {
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    val w = size.width
-                    val h = size.height
-                    val padL = 40f
-                    val padR = 20f
-                    val padT = 20f
-                    val padB = 30f
-                    val plotW = w - padL - padR
-                    val plotH = h - padT - padB
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(12.dp)
+                ) {
+                    Canvas(modifier = Modifier.fillMaxSize()) {
+                        val w = size.width
+                        val h = size.height
+                        val padL = 36f
+                        val padR = 16f
+                        val padT = 16f
+                        val padB = 24f
+                        val plotW = w - padL - padR
+                        val plotH = h - padT - padB
 
-                    // Horizontal Grid Lines
-                    for (i in 0..3) {
-                        val y = padT + (i / 3f) * plotH
-                        drawLine(
-                            color = HairlineBorder,
-                            start = Offset(padL, y),
-                            end = Offset(padL + plotW, y),
-                            strokeWidth = 1f
-                        )
-                    }
-
-                    // 4 Stage Points along X axis: 0: Pool, 1: Stage 1, 2: Stage 2, 3: Final 3
-                    val xPts = listOf(
-                        padL,
-                        padL + 0.33f * plotW,
-                        padL + 0.66f * plotW,
-                        padL + plotW
-                    )
-
-                    // Curve 1: Logarithmic Count Decay (10k -> 1k -> 50 -> 3)
-                    val decayY = listOf(
-                        padT,                           // 10,000 (top)
-                        padT + 0.25f * plotH,           // 1,000
-                        padT + 0.58f * plotH,           // 50
-                        padT + 0.88f * plotH            // 3
-                    )
-
-                    // Draw volume area under decay curve
-                    val areaPath = Path().apply {
-                        moveTo(xPts[0], padT + plotH)
+                        // Horizontal Grid Lines
                         for (i in 0..3) {
-                            lineTo(xPts[i], decayY[i])
+                            val y = padT + (i / 3f) * plotH
+                            drawLine(
+                                color = HairlineBorder,
+                                start = Offset(padL, y),
+                                end = Offset(padL + plotW, y),
+                                strokeWidth = 1f
+                            )
                         }
-                        lineTo(xPts[3], padT + plotH)
-                        close()
-                    }
-                    drawPath(
-                        areaPath,
-                        brush = Brush.verticalGradient(
-                            listOf(Color(0x25111111), Color(0x04111111)),
-                            startY = padT,
-                            endY = padT + plotH
+
+                        // 4 Stage Points along X axis: 0: Pool, 1: Stage 1, 2: Stage 2, 3: Final 3
+                        val xPts = listOf(
+                            padL,
+                            padL + 0.33f * plotW,
+                            padL + 0.66f * plotW,
+                            padL + plotW
                         )
-                    )
 
-                    val decayPath = Path().apply {
-                        moveTo(xPts[0], decayY[0])
-                        for (i in 1..3) {
-                            lineTo(xPts[i], decayY[i])
+                        // Curve 1: Logarithmic Count Decay (10k -> 1k -> 50 -> 3)
+                        val decayY = listOf(
+                            padT,
+                            padT + 0.25f * plotH,
+                            padT + 0.58f * plotH,
+                            padT + 0.88f * plotH
+                        )
+
+                        // Draw volume area under decay curve
+                        val areaPath = Path().apply {
+                            moveTo(xPts[0], padT + plotH)
+                            for (i in 0..3) {
+                                lineTo(xPts[i], decayY[i])
+                            }
+                            lineTo(xPts[3], padT + plotH)
+                            close()
                         }
-                    }
-                    drawPath(decayPath, color = InkPrimary, style = Stroke(width = 3f))
+                        drawPath(
+                            areaPath,
+                            brush = Brush.verticalGradient(
+                                listOf(Color(0x20111111), Color(0x02111111)),
+                                startY = padT,
+                                endY = padT + plotH
+                            )
+                        )
 
-                    // Curve 2: Purity / Hit Rate Growth (5.2% -> 7.7% -> 12.0% -> 100%)
-                    val purityY = listOf(
-                        padT + (1f - 0.052f) * plotH,
-                        padT + (1f - 0.077f) * plotH,
-                        padT + (1f - 0.120f) * plotH,
-                        padT + (1f - 0.95f) * plotH
-                    )
-
-                    val purityPath = Path().apply {
-                        moveTo(xPts[0], purityY[0])
-                        for (i in 1..3) {
-                            lineTo(xPts[i], purityY[i])
+                        val decayPath = Path().apply {
+                            moveTo(xPts[0], decayY[0])
+                            for (i in 1..3) {
+                                lineTo(xPts[i], decayY[i])
+                            }
                         }
-                    }
-                    drawPath(
-                        purityPath,
-                        color = Color(0xFF2E7D32),
-                        style = Stroke(width = 2.5f)
-                    )
+                        drawPath(decayPath, color = InkPrimary, style = Stroke(width = 3f))
 
-                    // Draw points
-                    for (i in 0..3) {
-                        drawCircle(color = InkPrimary, radius = 5f, center = Offset(xPts[i], decayY[i]))
-                        drawCircle(color = Color(0xFF2E7D32), radius = 4f, center = Offset(xPts[i], purityY[i]))
+                        // Curve 2: Purity / Hit Rate Growth (5.2% -> 7.7% -> 12.0% -> 100%)
+                        val purityY = listOf(
+                            padT + (1f - 0.052f) * plotH,
+                            padT + (1f - 0.077f) * plotH,
+                            padT + (1f - 0.120f) * plotH,
+                            padT + (1f - 0.95f) * plotH
+                        )
+
+                        val purityPath = Path().apply {
+                            moveTo(xPts[0], purityY[0])
+                            for (i in 1..3) {
+                                lineTo(xPts[i], purityY[i])
+                            }
+                        }
+                        drawPath(
+                            purityPath,
+                            color = Color(0xFF137333),
+                            style = Stroke(width = 2.5f)
+                        )
+
+                        // Draw points
+                        for (i in 0..3) {
+                            drawCircle(color = InkPrimary, radius = 5f, center = Offset(xPts[i], decayY[i]))
+                            drawCircle(color = Color(0xFF137333), radius = 4f, center = Offset(xPts[i], purityY[i]))
+                        }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
-            // Non-overlapping clean legend
+            // Clean legend
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(modifier = Modifier.size(10.dp).background(InkPrimary, CircleShape))
-                    Spacer(modifier = Modifier.width(6.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Candidate Pool Contraction (10,000 → 3)",
                         modifier = Modifier.weight(1f),
@@ -805,18 +801,16 @@ fun FunnelFiltrationDecayChart() {
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(modifier = Modifier.size(10.dp).background(Color(0xFF2E7D32), CircleShape))
-                    Spacer(modifier = Modifier.width(6.dp))
+                    Box(modifier = Modifier.size(10.dp).background(Color(0xFF137333), CircleShape))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "Active Compound Purity (5.2% → 100% Confirmed)",
                         modifier = Modifier.weight(1f),
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color(0xFF2E7D32)
+                        color = Color(0xFF137333)
                     )
                 }
             }
         }
     }
 }
-
-

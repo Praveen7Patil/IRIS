@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.parsec.molfunnel"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.parsec.molfunnel"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
 
