@@ -38,7 +38,7 @@ import com.parsec.molfunnel.ui.theme.*
 fun LeadsScreen(bundle: AppBundle) {
     var selectedTab by remember { mutableIntStateOf(0) } // 0 = Final 3, 1 = Top-20
 
-    val leads = if (selectedTab == 0) bundle.finalLeads else bundle.top20Batch
+    val leads = if (selectedTab == 0) bundle.finalLeads.take(1) else bundle.top20Batch
 
     LazyColumn(
         modifier = Modifier
@@ -51,12 +51,12 @@ fun LeadsScreen(bundle: AppBundle) {
         item {
             Column {
                 Text(
-                    text = if (selectedTab == 0) "Final 3 Leads" else "Top-20 Batch",
+                    text = if (selectedTab == 0) "Winning Lead" else "Top-20 Batch",
                     style = MaterialTheme.typography.headlineLarge,
                     fontFamily = FontFamily.Serif
                 )
                 Text(
-                    text = "Selected by QpiAI Opt HUBO (₹2,000 budget)",
+                    text = if (selectedTab == 0) "Optimal lead selected by QpiAI Opt HUBO (₹2,000 budget)" else "Top-20 QML ZZ-Ring Quantum Fidelity Survivors",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -71,7 +71,7 @@ fun LeadsScreen(bundle: AppBundle) {
                     .padding(4.dp)
             ) {
                 TabButton(
-                    text = "FINAL 3 LEADS",
+                    text = "WINNING LEAD",
                     selected = selectedTab == 0,
                     modifier = Modifier.weight(1f)
                 ) { selectedTab = 0 }

@@ -194,7 +194,7 @@ fun HomeScreen(
                             .height(48.dp)
                     ) {
                         Text(
-                            text = "VIEW FINAL LEADS",
+                            text = "VIEW WINNING LEAD",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 0.5.sp,
