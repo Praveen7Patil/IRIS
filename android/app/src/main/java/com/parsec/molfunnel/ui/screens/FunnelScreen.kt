@@ -331,9 +331,9 @@ fun FunnelScreen(bundle: AppBundle) {
             }
         }
 
-        // Visual Graph: Filtration Yield & Purity Dynamics
+        // Visual Graph: Filtration Yield & Purity Dynamics (Interactive with Scrubber)
         item {
-            FunnelFiltrationDecayChart()
+            FunnelFiltrationDecayChart(selectedStage = currentStageInt)
         }
 
         // Stage 1 Detail Card
@@ -580,7 +580,7 @@ fun DetailedStageCard(
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 DistinctionMetricBox(
-                    label = "CONFIRMED CURES",
+                    label = "QUALIFIED LEADS",
                     value = hitsFound,
                     subtext = "Hit Rate: $hitRate",
                     isHighlight = true,
@@ -618,7 +618,7 @@ fun DetailedStageCard(
 }
 
 @Composable
-fun FunnelFiltrationDecayChart() {
+fun FunnelFiltrationDecayChart(selectedStage: Int = 2) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -771,10 +771,23 @@ fun FunnelFiltrationDecayChart() {
                             style = Stroke(width = 2.5f)
                         )
 
-                        // Draw points
+                        // Draw points with active stage highlight linked to scrubber
                         for (i in 0..3) {
-                            drawCircle(color = InkPrimary, radius = 5f, center = Offset(xPts[i], decayY[i]))
-                            drawCircle(color = Color(0xFF137333), radius = 4f, center = Offset(xPts[i], purityY[i]))
+                            val isSel = (i == selectedStage)
+                            if (isSel) {
+                                drawCircle(
+                                    color = InkPrimary.copy(alpha = 0.22f),
+                                    radius = 12f,
+                                    center = Offset(xPts[i], decayY[i])
+                                )
+                                drawCircle(
+                                    color = Color(0xFF137333).copy(alpha = 0.25f),
+                                    radius = 11f,
+                                    center = Offset(xPts[i], purityY[i])
+                                )
+                            }
+                            drawCircle(color = InkPrimary, radius = if (isSel) 7f else 4.5f, center = Offset(xPts[i], decayY[i]))
+                            drawCircle(color = Color(0xFF137333), radius = if (isSel) 6f else 4f, center = Offset(xPts[i], purityY[i]))
                         }
                     }
                 }
@@ -808,6 +821,34 @@ fun FunnelFiltrationDecayChart() {
                         modifier = Modifier.weight(1f),
                         style = MaterialTheme.typography.labelSmall,
                         color = Color(0xFF137333)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            val stageInspectionLabels = listOf(
+                "Pool: 10,000 Candidates · 5.2% Natural Active Baseline",
+                "Stage 1: 1,000 Candidates · 7.7% Active Hit Density",
+                "Stage 2: 50 Candidates · 12.0% Quantum Kernel Enriched",
+                "Stage 3: 3 Qualified Leads · 100% Unique Novel Chemotypes"
+            )
+            Surface(
+                shape = RoundedCornerShape(10.dp),
+                color = ChipBg,
+                border = BorderStroke(1.dp, HairlineBorder),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "INSPECTING: ${stageInspectionLabels[selectedStage.coerceIn(0, 3)]}",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = InkPrimary
                     )
                 }
             }

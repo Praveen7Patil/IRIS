@@ -493,6 +493,24 @@ fun LeadCard(
                         PlanItem("Counter-Screen", plan.counterScreening)
                         PlanItem("IC50 Dilution", plan.ic50Determination)
                         PlanItem("Solubility", plan.solubilityCheck)
+
+                        Spacer(modifier = Modifier.height(10.dp))
+                        HorizontalDivider(color = HairlineBorder)
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = "QUANTITATIVE GO / NO-GO GATES",
+                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 9.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = InkSecondary,
+                            letterSpacing = 0.5.sp
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        PlanItem("Primary Potency Gate", "IC50 <= 10 uM with >= 50% max inhibition -> GO; IC50 > 50 uM -> DROP")
+                        PlanItem("Selectivity Window", "ALDH2 IC50 / ALDH1 IC50 >= 10x -> GO (avoids acetaldehyde cytotoxicity)")
+                        PlanItem("Aqueous Solubility", "Turbidity < 10 NTU at 50 uM in 1% DMSO aqueous buffer -> GO")
+                        PlanItem("Stopping Rule", "If Lead 1 shows < 20% inhibition or precipitation > 10 NTU, advance Lead 2")
                     }
                 }
             }
