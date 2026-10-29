@@ -111,86 +111,33 @@ fun HomeScreen(
                         lineHeight = 36.sp,
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center
                     )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Text(
-                        text = "Quant-A-Maze 3.0, QML-04 | Team Parsec\nALDH1 Inhibition (AID 1030)",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = InkSecondary,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                        lineHeight = 20.sp
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    // 2x2 Distinct Rectangular Metric Distinction Boxes
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        DistinctionMetricBox(
-                            label = "POOL",
-                            value = "10,000",
-                            subtext = "Library compounds",
-                            modifier = Modifier.weight(1f)
-                        )
-                        DistinctionMetricBox(
-                            label = "ENRICHMENT",
-                            value = "2.30x",
-                            subtext = "12.0% Hit rate",
-                            isHighlight = true,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        DistinctionMetricBox(
-                            label = "TOP LEAD",
-                            value = "Lead 1",
-                            subtext = "100% Unique scaffold",
-                            modifier = Modifier.weight(1f)
-                        )
-                        DistinctionMetricBox(
-                            label = "ASSAY COST",
-                            value = "₹112.82",
-                            subtext = "Budget: ₹2,000",
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(28.dp))
 
                     Button(
                         onClick = { inWalkthrough = true },
-                        shape = RoundedCornerShape(14.dp),
+                        shape = CircleShape,
                         colors = ButtonDefaults.buttonColors(containerColor = InkPrimary),
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.85f)
                             .height(50.dp)
                     ) {
                         Text(
                             text = "START WALKTHROUGH",
                             style = MaterialTheme.typography.labelMedium,
-                            letterSpacing = 1.sp,
+                            letterSpacing = 1.5.sp,
                             fontWeight = FontWeight.Bold,
                             color = CardBg
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(14.dp))
 
                     OutlinedButton(
                         onClick = { onNavigateToTab(1) },
-                        shape = RoundedCornerShape(14.dp),
+                        shape = CircleShape,
                         border = BorderStroke(1.dp, CardBorder),
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(0.85f)
                             .height(48.dp)
                     ) {
                         Text(
