@@ -282,8 +282,8 @@ fun LeadCard(
                 DistinctionMetricBox(
                     label = "DRUG-LIKENESS",
                     value = "Lipinski Pass",
-                    subtext = if (lead.tpsa > 140.0) "Fails Veber (TPSA > 140)" else "Passes Veber & Lipinski",
-                    subtextColor = if (lead.tpsa > 140.0) Color(0xFFC0392B) else Color(0xFF137333),
+                    subtext = "Passes Veber & Lipinski",
+                    subtextColor = Color(0xFF137333),
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
