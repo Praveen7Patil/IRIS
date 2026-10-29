@@ -1,6 +1,9 @@
 package com.parsec.molfunnel
 
 import android.os.Bundle
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.Spring
@@ -76,7 +79,9 @@ fun MainApp(repository: MolFunnelRepository) {
     var selectedTab by remember { mutableStateOf(NavigationTab.HOME) }
     var bundle by remember { mutableStateOf(AppBundle()) }
     var isBackendOnline by remember { mutableStateOf(true) }
+    var showServerDialog by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         bundle = repository.getBundle()
@@ -124,11 +129,12 @@ fun MainApp(repository: MolFunnelRepository) {
                         }
                     }
 
-                    // Live QpiAI Cloud Status Pill
+                    // Live QpiAI Cloud Status Pill (Clickable for Server Settings)
                     Surface(
                         shape = RoundedCornerShape(8.dp),
                         color = if (isBackendOnline) Color(0xFFE8F8F5) else ChipBg,
-                        border = androidx.compose.foundation.BorderStroke(1.dp, if (isBackendOnline) Color(0xFF27AE60) else HairlineBorder)
+                        border = androidx.compose.foundation.BorderStroke(1.dp, if (isBackendOnline) Color(0xFF27AE60) else HairlineBorder),
+                        modifier = Modifier.clickable { showServerDialog = true }
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -181,7 +187,76 @@ fun MainApp(repository: MolFunnelRepository) {
             }
         }
     }
+    // Backend Server Connection & Network Configuration Dialog
+    if (showServerDialog) {
+        var tempUrl by remember { mutableStateOf(repository.baseUrl) }
+        AlertDialog(
+            onDismissRequest = { showServerDialog = false },
+            title = {
+                Text(
+                    text = "Server Connection Settings",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.Bold,
+                    color = InkPrimary
+                )
+            },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text(
+                        text = "Configure live backend endpoint (e.g. WiFi IP or ngrok public tunnel):",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = InkSecondary
+                    )
+                    OutlinedTextField(
+                        value = tempUrl,
+                        onValueChange = { tempUrl = it },
+                        label = { Text("Base URL", style = MaterialTheme.typography.labelSmall) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
+                    )
+                    Text(
+                        text = "Default Emulator: http://10.0.2.2:8000/\nPhysical Phone: http://192.168.x.x:8000/ or https://tunnel.ngrok.app/",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = InkSecondary,
+                        fontSize = 10.sp
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        scope.launch {
+                            val formatted = if (tempUrl.endsWith("/")) tempUrl else "$tempUrl/"
+                            repository.baseUrl = formatted
+                            val online = repository.isBackendReachable()
+                            isBackendOnline = online
+                            if (online) {
+                                bundle = repository.getBundle()
+                                Toast.makeText(context, "Connected to backend successfully!", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Backend not reachable, operating in offline benchmark mode.", Toast.LENGTH_SHORT).show()
+                            }
+                            showServerDialog = false
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = InkPrimary),
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text("CONNECT & TEST", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = CardBg)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showServerDialog = false }) {
+                    Text("CANCEL", style = MaterialTheme.typography.labelSmall, color = InkSecondary)
+                }
+            },
+            containerColor = CardBg,
+            shape = RoundedCornerShape(20.dp)
+        )
+    }
 }
+
 
 /**
  * Apple-style liquid glass bottom navigation bar with 100% opaque solid background.

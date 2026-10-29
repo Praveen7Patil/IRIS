@@ -202,6 +202,103 @@ fun HomeScreen(
                     }
                 }
             }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            // Problem Scope & User Profile Card (Rubric Criterion 1)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.5.dp, CardBorder, RoundedCornerShape(26.dp)),
+                shape = RoundedCornerShape(26.dp),
+                colors = CardDefaults.cardColors(containerColor = CardBg),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "PROBLEM SCOPE & USER PROFILE",
+                            style = MaterialTheme.typography.labelSmall,
+                            letterSpacing = 1.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = InkSecondary
+                        )
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = HitBadgeBg
+                        ) {
+                            Text(
+                                text = "MED-CHEM DISCOVERY",
+                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontSize = 9.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = HitBadgeText
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Medicinal Chemistry Decision Context",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.Bold,
+                        color = InkPrimary
+                    )
+                    Text(
+                        text = "Targeting cancer stem-cell chemoresistance under fixed assay budget",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = InkSecondary
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        DistinctionMetricBox(
+                            label = "PRIMARY USER",
+                            value = "Med-Chem Discovery",
+                            subtext = "Translational Oncology Team",
+                            modifier = Modifier.weight(1f)
+                        )
+                        DistinctionMetricBox(
+                            label = "TARGET BIOLOGY",
+                            value = "ALDH1 Inhibitor",
+                            subtext = "PubChem AID 1030 (LIT-PCBA)",
+                            isHighlight = true,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        DistinctionMetricBox(
+                            label = "ASSAY BUDGET",
+                            value = "₹2,000 Limit",
+                            subtext = "₹10.8 Lakh physical screen saved",
+                            isHighlight = true,
+                            modifier = Modifier.weight(1f)
+                        )
+                        DistinctionMetricBox(
+                            label = "CORE DECISION",
+                            value = "Advance 3 Leads",
+                            subtext = "100% Unique novel scaffolds",
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+            }
         } else {
             // Walkthrough Card
             val currentPair = steps[currentStep - 1]
