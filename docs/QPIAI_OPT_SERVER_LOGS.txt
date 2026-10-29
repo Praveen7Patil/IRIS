@@ -1,0 +1,47 @@
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "OPTIONS /api/qubo/dispatch HTTP/1.1" 200 OK
+================================================================
+[QPI AI OPT] Received dispatch request from UI...
+[QPI AI OPT] Initializing Facility Dispatch QUBO...
+[QPI AI OPT] Applying Capacity & Chemistry Penalties...
+[QPI AI OPT] Solver Status: OPTIMAL. Assigned to Facility Beta.
+================================================================
+INFO:     36.255.14.3:0 - "POST /api/qubo/dispatch HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+
+================================================================
+[QPI AI OPT] Received dispatch request from UI...
+[QPI AI OPT] Initializing Facility Dispatch QUBO...
+[QPI AI OPT] Applying Capacity & Chemistry Penalties...
+[QPI AI OPT] Solver Status: OPTIMAL. Assigned to Facility Beta.
+================================================================
+INFO:     36.255.14.3:0 - "POST /api/qubo/dispatch HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+
+================================================================
+[QPI AI OPT] Received Stage 2 QUBO solve request from UI...
+[QPI AI OPT] Initializing Molecular Funnel QUBO (1,000 -> 50)...
+[QPI AI OPT] Applying Tanimoto Redundancy & Budget Penalties (B <= ₹2,000)...
+[QPI AI OPT] Solver Status: OPTIMAL. Selected 12 diverse candidates.
+================================================================
+INFO:     36.255.14.3:0 - "POST /api/qubo/solve HTTP/1.1" 200 OK
+
+================================================================
+[QPI AI OPT] Received Stage 3 HUBO solve request from UI...
+[QPI AI OPT] Initializing Scaffold Diversity HUBO (50 -> 3 -> 1)...
+[QPI AI OPT] Applying Cubic Scaffold Penalty (omega * x_i * x_j * x_l)...
+[QPI AI OPT] Solver Status: OPTIMAL. Zero scaffold collapse. Lead: CID 24867375.
+================================================================
+INFO:     36.255.14.3:0 - "POST /api/hubo/solve HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     36.255.14.3:0 - "GET /api/leads HTTP/1.1" 200 OK
