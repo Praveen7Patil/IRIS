@@ -32,17 +32,17 @@ fun HomeScreen(
     var currentStep by remember { mutableIntStateOf(1) }
 
     val steps = listOf(
-        Pair("1. Target Disease", "ALDH1 inhibition: blocking cancer stem cell chemoresistance.") to 0,
-        Pair("2. Assay Data", "145k LIT-PCBA records curated: salt stripping, canonicalization, Murcko scaffolds.") to 0,
-        Pair("3. Zero-Overlap Split", "3,000 training vs 10,000 screening candidates with 0% scaffold leakage.") to 0,
-        Pair("4. 8-Qubit Quantum Kernel", "ZZ-ring fidelity kernel mapping molecular phase in Hilbert space.") to 3,
+        Pair("1. Target Disease & Problem Scope", "ALDH1 inhibition in cancer stem cells under strict ₹2,000 assay budget for translational oncology discovery.") to 0,
+        Pair("2. Assay Data Cleanse", "145,133 records curated with RDKit: salt stripping, canonicalization, Murcko scaffolds.") to 0,
+        Pair("3. Zero-Overlap Split", "3,000 training vs 10,000 screening candidates with strictly 0% scaffold leakage.") to 0,
+        Pair("4. 8-Qubit Quantum Kernel", "ZZ-ring fidelity kernel mapping molecular phase in Hilbert space via QpiAI Quantum SDK.") to 3,
         Pair("5. Stage 1 Pre-Filter", "10,000 → 1,000 candidates (77 true hits, 1.48x enrichment, max 5/scaffold).") to 0,
         Pair("6. Stage 2 Opt QUBO", "1,000 → 50 survivors (6 true hits, 2.30x enrichment, 100% unique scaffolds).") to 0,
-        Pair("7. Stage 3 Opt HUBO", "50 → 3 final leads with cubic scaffold penalty (0.00% optimality gap).") to 1,
-        Pair("8. Blinded Integrity", "Zero label leakage during screening: prospectively verified.") to 3,
+        Pair("7. Stage 3 Native HUBO", "Narrows down to top lead chemotypes using QpiAI Opt HUBO with cubic scaffold penalty.") to 1,
+        Pair("8. Blinded Integrity", "Zero label leakage during screening: prospectively verified with test answers locked.") to 3,
         Pair("9. Statistical Rigor", "Friedman test & Wilcoxon testing reported honestly across 5 seeds.") to 3,
-        Pair("10. Chemical Novelty", "All 3 final leads are 100% novel scaffolds passing Lipinski Rule of 5.") to 1,
-        Pair("11. Procurement Cost", "Itemized catalog costing: total lead bill is ₹333.96 (budget ₹2,000).") to 1,
+        Pair("10. Chemical Novelty", "100% of hit scaffolds in selected batch are structurally distinct from training folds.") to 1,
+        Pair("11. Procurement Cost", "Itemized catalog costing: single lead cost ₹112.82 under strict ₹2,000 budget.") to 1,
         Pair("12. Wet-Lab Protocol", "NADH fluorescence primary assay, LC-MS, and ALDH2 counter-screen.") to 1
     )
 
@@ -55,7 +55,7 @@ fun HomeScreen(
         contentAlignment = Alignment.Center
     ) {
         if (!inWalkthrough) {
-            // Main Hero Editorial Card
+            // Main Hero Editorial Card (Original Clean Style)
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -81,7 +81,7 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Decorative Dotted Blob Canvas (Editorial Style)
+                    // Decorative Dotted Blob Canvas (Original Editorial Style)
                     Canvas(
                         modifier = Modifier
                             .size(130.dp)
@@ -103,7 +103,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "From 10,000\nmolecules to 3",
+                        text = "From 10,000\nmolecules to 1",
                         style = MaterialTheme.typography.headlineLarge,
                         fontFamily = FontFamily.Serif,
                         fontWeight = FontWeight.Bold,
@@ -115,10 +115,11 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Text(
-                        text = "ALDH1 Target Inhibition Screen (LIT-PCBA AID 1030)",
+                        text = "Quant-A-Maze 3.0, QML-04 | Team Parsec\nALDH1 Inhibition (AID 1030)",
                         style = MaterialTheme.typography.bodyMedium,
                         color = InkSecondary,
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        lineHeight = 20.sp
                     )
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -150,15 +151,15 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         DistinctionMetricBox(
-                            label = "WINNERS",
-                            value = "3 Leads",
-                            subtext = "100% Unique scaffolds",
+                            label = "TOP LEAD",
+                            value = "Lead 1",
+                            subtext = "100% Unique scaffold",
                             modifier = Modifier.weight(1f)
                         )
                         DistinctionMetricBox(
-                            label = "TOTAL COST",
-                            value = "₹333.96",
-                            subtext = "₹111.32 / lead",
+                            label = "ASSAY COST",
+                            value = "₹112.82",
+                            subtext = "Budget: ₹2,000",
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -171,7 +172,7 @@ fun HomeScreen(
                         colors = ButtonDefaults.buttonColors(containerColor = InkPrimary),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(48.dp)
+                            .height(50.dp)
                     ) {
                         Text(
                             text = "START WALKTHROUGH",
@@ -193,108 +194,11 @@ fun HomeScreen(
                             .height(48.dp)
                     ) {
                         Text(
-                            text = "VIEW FINAL 3 LEADS",
+                            text = "VIEW FINAL LEADS",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             letterSpacing = 0.5.sp,
                             color = InkPrimary
-                        )
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            // Problem Scope & User Profile Card (Rubric Criterion 1)
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(1.5.dp, CardBorder, RoundedCornerShape(26.dp)),
-                shape = RoundedCornerShape(26.dp),
-                colors = CardDefaults.cardColors(containerColor = CardBg),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "PROBLEM SCOPE & USER PROFILE",
-                            style = MaterialTheme.typography.labelSmall,
-                            letterSpacing = 1.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = InkSecondary
-                        )
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = HitBadgeBg
-                        ) {
-                            Text(
-                                text = "MED-CHEM DISCOVERY",
-                                modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontSize = 9.5.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = HitBadgeText
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Medicinal Chemistry Decision Context",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontFamily = FontFamily.Serif,
-                        fontWeight = FontWeight.Bold,
-                        color = InkPrimary
-                    )
-                    Text(
-                        text = "Targeting cancer stem-cell chemoresistance under fixed assay budget",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = InkSecondary
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        DistinctionMetricBox(
-                            label = "PRIMARY USER",
-                            value = "Med-Chem Discovery",
-                            subtext = "Translational Oncology Team",
-                            modifier = Modifier.weight(1f)
-                        )
-                        DistinctionMetricBox(
-                            label = "TARGET BIOLOGY",
-                            value = "ALDH1 Inhibitor",
-                            subtext = "PubChem AID 1030 (LIT-PCBA)",
-                            isHighlight = true,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        DistinctionMetricBox(
-                            label = "ASSAY BUDGET",
-                            value = "₹2,000 Limit",
-                            subtext = "₹10.8 Lakh physical screen saved",
-                            isHighlight = true,
-                            modifier = Modifier.weight(1f)
-                        )
-                        DistinctionMetricBox(
-                            label = "CORE DECISION",
-                            value = "Advance 3 Leads",
-                            subtext = "100% Unique novel scaffolds",
-                            modifier = Modifier.weight(1f)
                         )
                     }
                 }

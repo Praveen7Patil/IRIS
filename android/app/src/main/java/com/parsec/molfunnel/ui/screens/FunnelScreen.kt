@@ -142,7 +142,7 @@ fun FunnelScreen(bundle: AppBundle) {
                 fontFamily = FontFamily.Serif
             )
             Text(
-                text = "Multi-tier screening from 10,000 to 3 leads",
+                text = "Multi-tier screening from 10,000 to 1 lead",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
