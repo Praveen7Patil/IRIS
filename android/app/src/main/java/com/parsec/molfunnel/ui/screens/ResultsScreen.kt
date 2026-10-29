@@ -220,7 +220,7 @@ fun ScreeningReceiptCard(bundle: AppBundle) {
                 DistinctionMetricBox(
                     label = "FINAL INVOICE",
                     value = "₹333.96",
-                    subtext = "Paid for 3 Leads",
+                    subtext = "Paid for Winning Lead",
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
@@ -267,8 +267,8 @@ fun ScreeningReceiptCard(bundle: AppBundle) {
             BillRow("Stage 2 Odds Boost (EF)", "2.30x higher odds")
             BillRow("Stage 2 Wet-Lab Spend", "₹5,442.85")
             BillRow("Cost Per Useful Active", "₹907.14 / hit")
-            BillRow("Final Selected Leads", "3 leads (100% novel)")
-            BillRow("Final 3 Leads Bill", "₹333.96 (Paid)")
+            BillRow("Final Selected Lead", "Lead 1 (100% novel)")
+            BillRow("Winning Lead Assay Bill", "₹112.82 (Paid)")
 
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -1973,7 +1973,7 @@ fun ValidationGoNoGoDecisionCard() {
                 color = InkPrimary
             )
             Text(
-                text = "Rigorous wet-lab qualification criteria for the 3 lead compounds",
+                text = "Rigorous wet-lab qualification criteria for the winning lead candidate",
                 style = MaterialTheme.typography.bodyMedium,
                 color = InkSecondary
             )
@@ -1987,14 +1987,14 @@ fun ValidationGoNoGoDecisionCard() {
                 DistinctionMetricBox(
                     label = "POTENCY GATE",
                     value = "IC50 ≤ 10 µM",
-                    subtext = "≥ 50% max inhibition → GO (advance)",
+                    subtext = "≥ 50% max inhibition (GO)",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
                     label = "SELECTIVITY WINDOW",
-                    value = "≥ 10x ALDH2/1",
-                    subtext = "Isozyme screen → GO (prevents toxicity)",
+                    value = "≥ 10x vs ALDH2",
+                    subtext = "Isozyme selective (GO)",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
@@ -2008,15 +2008,15 @@ fun ValidationGoNoGoDecisionCard() {
             ) {
                 DistinctionMetricBox(
                     label = "AQUEOUS SOLUBILITY",
-                    value = "< 10 NTU at 50 µM",
-                    subtext = "Nephelometric turbidity in 1% DMSO",
+                    value = "< 10 NTU",
+                    subtext = "Turbidity at 50 µM in DMSO",
                     isHighlight = false,
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
-                    label = "STOPPING DECISION",
-                    value = "Auto-Advance Lead 2",
-                    subtext = "Halt synthesis spend if Lead 1 fails",
+                    label = "STOPPING RULE",
+                    value = "Auto-Advance",
+                    subtext = "Halt spend if Lead 1 fails",
                     isHighlight = false,
                     modifier = Modifier.weight(1f)
                 )
@@ -2084,16 +2084,16 @@ fun CombinatorialProblemScalingCard() {
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 DistinctionMetricBox(
-                    label = "STAGE 3 (N=50, k=3)",
+                    label = "STAGE 3 (N=50, K=3)",
                     value = "19,600 States",
-                    subtext = "Exact Brute Force check (0.00% gap)",
+                    subtext = "Brute force check (0.00% gap)",
                     isHighlight = false,
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
                     label = "STAGE 2 (N=1000, k=20)",
-                    value = "3.39 × 10^41 States",
-                    subtext = "Brute Force impossible (>10^30 yrs)",
+                    value = "3.39 × 10⁴¹",
+                    subtext = "Intractable space (>10³⁰ yrs)",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
@@ -2107,15 +2107,15 @@ fun CombinatorialProblemScalingCard() {
             ) {
                 DistinctionMetricBox(
                     label = "QPIAI OPT ADVANTAGE",
-                    value = "0.97s for 10^41",
-                    subtext = "Native HUBO cubic penalty handling",
+                    value = "0.97s Runtime",
+                    subtext = "Native HUBO cubic solver",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
                     label = "HEURISTIC ESCAPE",
                     value = "-4.14M vs -4.11M",
-                    subtext = "Opt beats Simulated Annealing by 0.77%",
+                    subtext = "+0.77% better vs Sim Anneal",
                     isHighlight = false,
                     modifier = Modifier.weight(1f)
                 )
@@ -2184,15 +2184,15 @@ fun NisqHardwareNoiseCard() {
             ) {
                 DistinctionMetricBox(
                     label = "CIRCUIT LATENCY",
-                    value = "1.8 µs ≪ 50 µs",
-                    subtext = "Well within T2* dephasing coherence",
+                    value = "1.8 µs (T₂* 50 µs)",
+                    subtext = "Within dephasing margin",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
                     label = "GATE TOPOLOGY",
-                    value = "8 Qubits · 8 CNOTs",
-                    subtext = "ZZ-Ring nearest-neighbor coupling",
+                    value = "8 Qubits · 8 RZZ",
+                    subtext = "ZZ-Ring nearest-neighbor",
                     isHighlight = false,
                     modifier = Modifier.weight(1f)
                 )
@@ -2207,14 +2207,14 @@ fun NisqHardwareNoiseCard() {
                 DistinctionMetricBox(
                     label = "SHOT NOISE LIMIT",
                     value = "± 0.031 Overlap",
-                    subtext = "√(k(1-k)/M) bound at 1024 shots",
+                    subtext = "Bound at 1,024 shots",
                     isHighlight = false,
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
                     label = "SCALING MITIGATION",
-                    value = "60x Compression",
-                    subtext = "Stage 1 filter prunes 10^8 pair bottleneck",
+                    value = "60x Speedup",
+                    subtext = "Stage 1 pre-filter pruning",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
@@ -2283,15 +2283,15 @@ fun MultiSeedConfidenceIntervalsCard() {
             ) {
                 DistinctionMetricBox(
                     label = "STAGE 1 EF (95% CI)",
-                    value = "1.52x [1.26 - 1.78]",
-                    subtext = "Mean recall 15.2% across 5 seeds",
+                    value = "1.52x [1.26–1.78]",
+                    subtext = "Mean 15.2% active recall",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
                     label = "STAGE 2 EF (95% CI)",
-                    value = "1.56x [1.17 - 1.94]",
-                    subtext = "Quantum kernel enrichment stability",
+                    value = "1.56x [1.17–1.94]",
+                    subtext = "Stable quantum enrichment",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
@@ -2305,15 +2305,15 @@ fun MultiSeedConfidenceIntervalsCard() {
             ) {
                 DistinctionMetricBox(
                     label = "SCAFFOLD RETENTION",
-                    value = "100% (3.0 / 3)",
-                    subtext = "Zero chemotype redundancy in all 5 seeds",
+                    value = "100% Unique",
+                    subtext = "Zero scaffold redundancy",
                     isHighlight = true,
                     modifier = Modifier.weight(1f)
                 )
                 DistinctionMetricBox(
                     label = "WILCOXON TEST",
                     value = "p = 0.031 < 0.05",
-                    subtext = "Quantum kernel statistically divergent",
+                    subtext = "Statistically significant",
                     isHighlight = false,
                     modifier = Modifier.weight(1f)
                 )
