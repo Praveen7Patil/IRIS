@@ -88,8 +88,11 @@ The production Android application is built with Jetpack Compose featuring an Ap
 
 ---
 
-## 6. Project Documentation Index
+## 6. Project Documentation & Evidence Index
 
+- [qpiai_opt_logs.txt](qpiai_opt_logs.txt) — **QpiAI Opt Server Logs**: Exact microsecond timestamps, live HTTP traces, and single winning lead test data.
+- [qpiai_platform_output.txt](qpiai_platform_output.txt) — **Platform & Benchmark Output**: 8-model comparison (+26.3% PR-AUC boost) and QUBO/HUBO 0.00% optimality gap.
+- [docs/MASTER_PROJECT_BRIEF_FOR_AI.md](docs/MASTER_PROJECT_BRIEF_FOR_AI.md) — **Master Project Briefing**: Complete technical specification for AI systems and judges.
 - [EVIDENCE_PACK.md](EVIDENCE_PACK.md) — **1-Page Judge Reference** mapping all rubric criteria to automated test logs and cryptographic proofs.
 - [docs/PRESENTATION_AND_QML_EXPLAINER.md](docs/PRESENTATION_AND_QML_EXPLAINER.md) — **Master Presentation Guide** with QML formulas, under-the-hood calculations, 5-minute pitch script, and 10 judge Q&A defenses.
 - [results/IRIS_QML04_Comprehensive_Report.pdf](results/IRIS_QML04_Comprehensive_Report.pdf) — Complete technical whitepaper and funnel report.
