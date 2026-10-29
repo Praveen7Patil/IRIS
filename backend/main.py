@@ -138,10 +138,14 @@ def get_funnel():
 @app.get("/leads")
 @app.get("/api/leads")
 def get_leads():
+    leads = CACHED_RUN.get("final_3_leads", [])
+    winning_lead = leads[:1] if leads else []
     return {
         "run_id": CACHED_RUN.get("run_id"),
         "provenance": "CACHED_RUN",
-        "final_3_leads": CACHED_RUN.get("final_3_leads"),
+        "winning_lead": winning_lead[0] if winning_lead else {},
+        "final_leads": winning_lead,
+        "final_3_leads": winning_lead,
         "top_20_batch": CACHED_RUN.get("top_20_batch")
     }
 
